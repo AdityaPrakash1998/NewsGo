@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>News</title>
+  <style>
+    #settings{
+      margin-left: 250px;
+      background: #f44336;
+    }
+    #content{
+      display: grid;
+      grid-gap: 5px;
+      grid-template-columns: repeat(2, 1fr)
+    }
+    #image{
+      width:100%;
+      height:120px;
+      border:none;
+    }
+  </style>
+</head>
+<body style="-webkit-app-region: drag; position:relative">
+  <div class="news container" style="position:absolute, left:0; top:0; width:100%;height:100%">
+    <div class="card blue-grey darken-1">
+      <span class="card-title amber-text">NEWS<a class="btn waves-effect" id="settings"><i class="material-icons">settings</i></a></span>
+        <div class="card-content white-text">
+          <p id='news_title' style="font-size:15px;width:100%;"></p>
+        </div>
+      </div>
+      <div id='content'>
+        <div id="news_content" class="white-text"></div>
+        <div><img id="image"></div>
+    </div>
+  </div>
+  <script src="news.js">
+  </script>
+  <script>
+  const electron=require('electron');
+  const {ipcRenderer}=electron;
+  document.getElementById('settings').addEventListener('click',()=>{
+    ipcRenderer.send('settings');
+  });
+
+  if(localStorage.language !=undefined)
+    setInterval(setNews(localStorage.language),160000);
+
+  ipcRenderer.on('saved',(e,data)=>{
+    //setNews(localStorage.language);
+    setInterval(setNews(localStorage.language),160000);
+  });
+  </script>
+</body>
+</html>
